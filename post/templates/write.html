@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container mb-6 mt-6">
+    <div class="notification" id="publicacion-notificacion">
+        ✍️ Escribe una <strong>publicación</strong>.
+    </div>
+</div>
+
+<div class="container" style="max-width: 700px;">
+    <div class="editor-container">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <textarea id="content-editor" name="content" class="textarea" placeholder="Escribe tu contenido aquí..."></textarea>
+
+            <button type="submit" class="button is-primary mt-5">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor
+            .create(document.querySelector('#content-editor'))
+            .catch(error => console.error(error));
+    });
+</script>
+
+<style>
+    /* NOTIFICACIÓN */
+    #publicacion-notificacion {
+        background: linear-gradient(90deg, #E3F2FD, #BBDEFB);
+        color: #0D47A1;
+        font-size: 1.25rem;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+    /* CONTENEDOR DEL FORMULARIO COMPLETO */
+    .editor-container {
+        background-color: #ffffff;
+        border: 1.5px solid #bbb;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* TEXTAREA y CKEditor */
+    .textarea, #content-editor, .ck-editor__editable {
+        color: inherit;
+        background-color: transparent;
+        border: 1.5px solid #bbb;
+        border-radius: 6px;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+        min-height: 200px;
+    }
+
+    .textarea:focus, #content-editor:focus, .ck-editor__editable:focus {
+        border-color: #0D47A1;
+        outline: none;
+        background-color: transparent;
+    }
+
+    /* BOTÓN */
+    button.button.is-primary {
+        font-weight: 600;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    button.button.is-primary:hover {
+        background-color: #094a8b;
+        color: #fff;
+    }
+
+    /* MODO CLARO */
+    body.light-mode, html.light-mode {
+        background-color: #E3F2FD;
+        color: #2C3E50;
+    }
+
+    body.light-mode #publicacion-notificacion {
+        background: linear-gradient(90deg, #E3F2FD, #BBDEFB);
+        color: #0D47A1;
+        box-shadow: 0 4px 12px rgba(13, 71, 161, 0.15);
+    }
+
+    body.light-mode .editor-container {
+        background-color: #ffffff;
+        border-color: #90CAF9;
+    }
+
+    body.light-mode .textarea,
+    body.light-mode #content-editor,
+    body.light-mode .ck-editor__editable {
+        border-color: #90CAF9;
+        background-color: #fff;
+    }
+
+    body.light-mode .textarea:focus,
+    body.light-mode #content-editor:focus,
+    body.light-mode .ck-editor__editable:focus {
+        border-color: #0D47A1;
+        background-color: #E3F2FD;
+    }
+
+    /* MODO OSCURO */
+    body.dark-mode, html.dark-mode {
+        background-color: #121212;
+        color: #ECEFF1;
+    }
+
+    body.dark-mode #publicacion-notificacion {
+        background: linear-gradient(90deg, #000000, #151a1f, #272c2e);
+        color: white;
+        box-shadow: 0 4px 12px rgba(38, 18, 127, 0.46);
+    }
+
+    body.dark-mode .editor-container {
+        background-color: #263238;
+        border-color: #455A64;
+    }
+
+    body.dark-mode .textarea,
+    body.dark-mode #content-editor,
+    body.dark-mode .ck-editor__editable {
+        border-color: #455A64;
+        background-color: #37474F;
+        color: #ECEFF1 !important;
+    }
+
+    body.dark-mode .textarea:focus,
+    body.dark-mode #content-editor:focus,
+    body.dark-mode .ck-editor__editable:focus {
+        border-color: #FFEB3B;
+        background-color: #455A64;
+        color: #FFF !important;
+    }
+
+    body.dark-mode button.button.is-primary {
+        background-color: #FFEB3B;
+        color: #121212;
+    }
+
+    body.dark-mode button.button.is-primary:hover {
+        background-color: #FDD835;
+    }
+</style>
+{% endblock %}

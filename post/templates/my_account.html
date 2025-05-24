@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="posts-container">
+    <div id="editar-notificacion" 
+         class="rounded-md px-4 py-4 text-blue-900 text-lg bg-blue-100
+                dark:bg-teal-800 dark:text-yellow-300 text-center max-w-lg w-full">
+        Edita tus <strong>historias</strong>.
+    </div>
+</div>
+
+<div class="posts-container">
+     {% if not posts %}
+    <div class="flex flex-col items-center space-y-6">
+        <div class="w-[350px]">
+            <img src="../../media/Tecnología Prometheus.gif" alt="hero image" class="w-full rounded-md shadow-md" />
+        </div>
+        <div>
+            <form action="{% url 'new_post' %}" class="mt-6 flex justify-center">
+                <button type="submit" 
+                        class="px-5 py-2 border border-blue-500 text-blue-600 rounded-lg 
+                               text-sm font-semibold hover:bg-blue-600 hover:text-white transition">
+                    Ir a Escribir
+                </button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    {% for post in posts %}
+    <div class="post-rectangulo text-center">
+        <p class="post-title">{{ post.title }}</p>
+        <p class="post-date"><small>{{ post.date_posted }}</small></p>
+        <nav class="post-buttons justify-center">
+            <form action="{% url 'edit_post' post.id %}">
+                <button type="submit" class="btn-editar mx-2">
+                    <span class="mr-2"><i class="fas fa-pen"></i></span>Editar
+                </button>
+            </form>
+            <form action="{% url 'delete_post' post.id %}">
+                <button type="submit" class="btn-eliminar mx-2">
+                    <span class="mr-2"><i class="fas fa-trash"></i></span>Eliminar
+                </button>
+            </form>
+        </nav>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<style>
+  /* Contenedor rectángulo con fondo, borde y bordes redondeados */
+  .post-rectangulo {
+    background-color: # ; /* azul */
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 12px;
+    max-width: 850px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center; /* centra todo horizontalmente */
+    text-align: center;
+  }
+
+  /* Título */
+  .post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  /* Fecha */
+  .post-date {
+    font-size: 0.9rem;
+    color: #cbd5e1; /* azul claro */
+  }
+
+  /* Contenedor de botones alineados al centro */
+  .post-buttons {
+    display: flex;
+    justify-content: center; /* centrar botones */
+    gap: 12px;
+  }
+
+  /* Botón editar */
+  .btn-editar {
+    background-color: #2563eb; /* azul más oscuro */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-editar:hover {
+    background-color: #1d4ed8; /* azul hover */
+  }
+
+  /* Botón eliminar */
+  .btn-eliminar {
+    background-color: #dc2626; /* rojo */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-eliminar:hover {
+    background-color: #b91c1c; /* rojo hover */
+  }
+
+  /* Responsivo: en pantallas pequeñas el contenedor se adapta */
+  @media (max-width: 900px) {
+    .post-rectangulo {
+      max-width: 100%;
+    }
+  }
+
+  /* Fondo general y colores */
+  body {
+    background-color: #f9fafb; /* verde oscuro */
+    color: #ffffff;
+    margin: 0;
+    font-family: system-ui, sans-serif;
+  }
+
+  body.light-mode, html.light-mode {
+    background-color: #E3F2FD;
+    color: #2C3E50;
+  }
+  body.dark-mode, html.dark-mode {
+    background-color: #037065;
+    color: #ECF0F1;
+  }
+
+  /* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Notificación superior */
+#editar-notificacion {
+  background-color: #bfdbfe;
+  color: #000000;
+  font-size: 1.125rem;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  max-width: 32rem;
+  width: 100%;
+}
+body.light-mode, html.light-mode {
+  background-color: #F5F7FA; /* Fondo gris azulado suave */
+  color: #1F2937; /* Texto gris oscuro para mejor contraste */
+}
+
+body.dark-mode, html.dark-mode {
+  background-color: #0F172A; /* Oscuro azul profundo */
+  color: #ECF0F1;
+}
+
+body.light-mode #editar-notificacion {
+  background-color: #DBEAFE; /* Azul claro */
+  color: #1E3A8A; /* Azul oscuro para buen contraste */
+}
+
+/* Post en modo claro */
+body.light-mode .post-rectangulo {
+  background: linear-gradient(135deg, #e3e8f0, #f8fafc); /* degradado gris suave */
+  color: #111827; /* Muy buen contraste */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .post-rectangulo {
+  background: linear-gradient(135deg, #222222, #ffffff10, #011C40);
+  color: white;
+}
+
+/* Botones */
+body.light-mode .btn-editar {
+  background-color: #3B82F6;
+}
+body.light-mode .btn-editar:hover {
+  background-color: #2563EB;
+}
+
+body.light-mode .btn-eliminar {
+  background-color: #EF4444;
+}
+body.light-mode .btn-eliminar:hover {
+  background-color: #DC2626;
+}
+
+body.dark-mode #editar-notificacion {
+  background: linear-gradient(135deg, #222222, #ffffff10, #011C40  );
+  color: #ffffff;
+}
+
+/* Contenedor flex para los posts */
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+/* Si no hay posts: imagen y botón */
+.empty-posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.empty-posts img {
+  width: 350px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de ir a escribir */
+.button-ir-escribir {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #3b82f6;
+  color: #2563eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.button-ir-escribir:hover {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Rectángulo de cada post */
+.post-rectangulo {
+   background: linear-gradient(135deg, #222222, #ffffff10, #011C40  );
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 12px;
+  max-width: 850px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+/* Título y fecha */
+.post-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.post-date {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+/* Botones */
+.post-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-editar, .btn-eliminar {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-editar {
+  background-color:  #000000; 
+}
+.btn-editar:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-eliminar {
+  background-color: #dc2626;
+}
+.btn-eliminar:hover {
+  background-color: #b91c1c;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .post-rectangulo {
+    max-width: 100%;
+  }
+}
+
+/* Fondo general */
+body {
+  background-color: #ffffff;
+  color: #ffffff;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+body.light-mode, html.light-mode {
+  background-color: #E3F2FD;
+  color: #2C3E50;
+}
+body.dark-mode, html.dark-mode {
+  background-color: #ffffff;
+  color: #ECF0F1;
+}
+</style>
+{% endblock %}

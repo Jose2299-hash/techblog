@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<style>
+  /* CONTENEDOR BASE */
+  .delete-container {
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  /* MODO CLARO */
+  .delete-container.light {
+     background-color: transparent;;
+    color: #1a1a1a;
+  }
+
+  .delete-card.light {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #0d0d0d;
+  }
+
+  /* MODO OSCURO */
+  .delete-container.dark {
+    background-color: transparent;
+    color: #000000;
+  }
+
+  .delete-card.dark {
+    background-color: rgba(2, 56, 89, 0.7);
+    color: #f1f1f1;
+  }
+
+  .delete-card {
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .notification {
+    background-color: #69BFEF;
+    color: black;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .dark.notification{
+  background-color: #000000;
+    color: black;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .delete-question {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .delete-question span {
+    font-weight: bold;
+    color: #e63946;
+  }
+
+  .btn-yes {
+    background-color: #e63946;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-yes:hover {
+    background-color: #c5303d;
+  }
+
+  .btn-cancel {
+    background-color: transparent;
+    border: 2px solid #ccc;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .btn-cancel:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+
+  .dark .btn-cancel {
+    border: 2px solid #84939c;
+    color: #e0e0e0;
+  }
+
+  .dark .btn-cancel:hover {
+    background-color: #84939c;
+    color: #011c40;
+  }
+
+  @media (max-width: 640px) {
+    .delete-card {
+      padding: 1.5rem;
+    }
+
+    .delete-question {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<div class="delete-container {% if is_dark_mode %}dark{% else %}light{% endif %}">
+  <div class="delete-card {% if is_dark_mode %}dark{% else %}light{% endif %}">
+    <div class="notification">
+      Estás a punto de <strong>eliminar</strong> una publicación.
+    </div>
+
+    <div class="delete-question">
+      ¿Estás seguro de eliminar la publicación <span>"{{ post.title }}"</span>?
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="submit" value="Sí, eliminar" class="btn-yes">
+    </form>
+
+    <!-- Botón Cancelar -->
+   <form action="{% url 'all_posts' %}">
+      <button type="submit" class="btn-cancel">Cancelar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
