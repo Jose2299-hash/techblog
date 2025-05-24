@@ -1,0 +1,401 @@
+<!-- Contenedor general con fondo y texto para modo claro/oscuro -->
+<div class="bg-white text-[#004d61] dark:bg-[#121212] dark:text-[#FFEB3B]">
+
+  <!-- Navbar principal con estilos de fondo y texto -->
+  <nav class="navbar bg-[#e3f2fd] text-[#0D47A1] dark:bg-[#037065] dark:text-[#FFEB3B]" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+  <img src="/media/Logo%20Completo%20HyperNet%20NexusCore.png" class="logo-grande h-[150px] w-auto max-h-none !important" alt="Logo">
+</a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+
+      <!-- Inicio navbar -->
+      <div class="navbar-start">
+        <a href="{% url 'all_posts' %}" class="navbar-item button home bg-[#FFA726] text-white hover:bg-[#FB8C00] dark:bg-[#FF5722] dark:hover:bg-[#D32F2F] dark:text-[#FFEB3B]">
+          Home
+        </a>
+        <a href="{% url 'new_post' %}" class="navbar-item button nuevo-blog bg-[#BA68C8] text-white hover:bg-[#AB47BC] dark:bg-[#8E24AA] dark:hover:bg-[#7B1FA2] dark:text-[#FFEB3B]">
+          Nuevo Blog
+        </a>
+        <a href="{% url 'my_account' %}" class="navbar-item button mi-publicacion bg-[#4DB6AC] text-white hover:bg-[#26A69A] dark:bg-[#0288D1] dark:hover:bg-[#0277BD] dark:text-[#FFEB3B]">
+          Mi publicación
+        </a>
+
+        <!-- Dropdown categorías -->
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link button categorias-tecnologicas bg-[#64B5F6] text-white hover:bg-[#42A5F5] dark:bg-[#00B0FF] dark:hover:bg-[#008CFF] dark:text-[#FFEB3B]">
+            Categorías Tecnológicas
+          </a>
+          <div class="navbar-dropdown submenu-categorias-tecnologicas bg-[#e5e7eb] text-[#004d61] rounded-md p-2 dark:bg-[#333] dark:text-[#FFEB3B]">
+            <a href="{% url 'about_project' %}" class="navbar-item opcion opcion-1 bg-[#D500F9] text-[#FFEB3B] p-2 mb-1 rounded transition-colors duration-300 hover:bg-[#B400D4]">
+              Tecnología y Transformación
+            </a>
+            <a href="{% url 'about_me' %}" class="navbar-item opcion opcion-2 bg-[#FF3D00] text-[#FFEB3B] p-2 mb-1 rounded transition-colors duration-300 hover:bg-[#D32F2F]">
+              Tecnología y Tendencias
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final navbar -->
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <button id="themeToggle" class="button is-rounded is-light bg-transparent text-[#0D47A1] dark:text-[#FFEB3B]" onclick="toggleTheme()">
+              🌙 Modo Oscuro / 🌞 Modo Claro
+            </button>
+
+            {% if not user.is_authenticated %}
+              <a href="{% url 'register' %}" class="button registro bg- [#1976D2] text-white hover:bg-[#1565C0]">
+                <strong>Registro</strong>
+              </a>
+              <a href="{% url 'login' %}" class="button is-light">
+                Inicio De Sesión
+              </a>
+            {% else %}
+              <p class="is-size-5" style="color:inherit;">
+                Hola, bienvenido <strong>{{ request.user }}</strong>!
+              </p>
+              <a href="{% url 'settings' request.user.id %}" style="margin-left: 20px; font-size: 30px; color: #FFEB3B;">
+                <span class="icon mdi mdi-account-cog"></span>
+              </a>
+              <a href="{% url 'logout' %}" class="button is-danger is-outlined ml-6 bg-[#E57373] text-white hover:bg-[#EF5350] dark:bg-[#ff7043] dark:hover:bg-[#e64a19] dark:text-[#FFEB3B]">
+                Cerrar Sesión
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+</div>
+
+<script>
+function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
+}
+window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+};
+</script>
+
+<style>
+/* Forzar tamaño del logo con !important */
+.logo-grande {
+  height: 150px !important; /* Aumenta tamaño */
+  width: auto !important;
+  max-height: none !important;
+}
+
+/* Agranda el navbar: altura y tamaño de texto */
+.navbar {
+  min-height: 120px; /* Más alto que el original */
+  font-size: 1.2rem; /* Aumenta el tamaño de texto de los elementos del navbar */
+}
+
+/* Ajusta los items del navbar para que estén centrados verticalmente */
+.navbar .navbar-brand,
+.navbar .navbar-menu {
+  align-items: center;
+  display: flex;
+  height: 120px;
+}
+
+/* 🌙 MODO OSCURO GENERAL */
+.dark-mode {
+    background: transparent);
+    color: #FFEB3B;
+}
+
+/* Barra de navegación en modo oscuro */
+.dark-mode .navbar {
+   background: linear-gradient(135deg, #000000);
+    color:rgb(250, 250, 247);
+}
+
+/* Elementos de la barra de navegación (enlaces, dropdowns, botones) */
+.dark-mode .navbar-item,
+.dark-mode .navbar-link,
+.dark-mode .navbar-dropdown,
+.dark-mode .button.light {
+   background: transparent;!important;
+    color: #FFFFFF !important;  
+}
+
+/* Botón primario en barra de navegación */
+.dark-mode .button.primary {
+    background-color: #393E46; 2 
+    color:rgb(238, 237, 234);
+}
+
+.dark-mode .button.primary:hover {
+    background-color: #FFFFFF;
+}
+
+/* Botón de peligro */
+.dark-mode .button.danger {
+    background-color: #00FFF5; 3
+    color: rgb(238, 237, 234);
+}
+
+.dark-mode .button.danger:hover {
+    background-color: #00FFF5; 4
+}
+
+/* Botones personalizados en modo oscuro */
+.dark-mode .button.home {
+    background-color: #FF5722;
+    color: #FFEB3B;
+}
+
+.dark-mode .button.home:hover {
+    background-color: #D32F2F;
+}
+
+.dark-mode .button.nuevo-blog {
+    background-color: #8E24AA;
+    color: #FFEB3B;
+}
+
+.dark-mode .button.nuevo-blog:hover {
+    background-color: #7B1FA2;
+}
+
+.dark-mode .button.mi-publicacion {
+    background-color: #0288D1;
+    color: #FFEB3B;
+}
+
+.dark-mode .button.mi-publicacion:hover {
+    background-color: #0277BD;
+}
+
+.dark-mode .button.categorias-tecnologicas {
+    background-color: #00B0FF;
+    color: #FFEB3B;
+}
+
+.dark-mode .button.categorias-tecnologicas:hover {
+    background-color: #008CFF;
+}
+
+/* Submenú Categorías Tecnológicas */
+.dark-mode .submenu-categorias-tecnologicas {
+    background-color: #333;
+    color: #FFEB3B;
+    border-radius: 5px;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion {
+    background-color: #023859;
+    color: #FFEB3B;
+    padding: 10px 15px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion:hover {
+    background-color:  #023859;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-1 {
+    background-color: #D500F9;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-1:hover {
+    background-color: #B400D4;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-2 {
+    background-color: #FF3D00;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-2:hover {
+    background-color: #D32F2F;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-3 {
+    background-color: #F57C00;
+    color: #FFEB3B;
+}
+
+.dark-mode .submenu-categorias-tecnologicas .opcion-3:hover {
+    background-color: #E64A19;
+    color: #FFEB3B;
+}
+
+/* LOGO GRANDE */
+.logo-grande {
+    height: 100px !important;
+    width: auto !important;
+    max-height: none !important;
+}
+
+/* USUARIO CON ICONO LLAMATIVO */
+.navbar-end .icon.account-cog {
+    background-color: #00B0FF;
+    color: #000000;
+    padding: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.navbar-end .icon.account-cog:hover {
+    transform: scale(1.1);
+}
+
+/* ICONOS MODO CLARO/OSCURO */
+.toggle-dark-mode .weather-night,
+.toggle-dark-mode .white-balance-sunny {
+    color: #00ADB5 !important;
+    font-size: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.dark-mode .toggle-dark-mode .weather-night,
+.dark-mode .toggle-dark-mode .white-balance-sunny {
+    color: #ffffff!important;
+}
+
+.toggle-dark-mode:hover .weather-night,
+.toggle-dark-mode:hover .white-balance-sunny {
+    transform: scale(1.2);
+}
+
+/* MODO CLARO - Barra de navegación */
+.navbar {
+    background-color: #e3f2fd;
+    color: #004d61;
+}
+
+/* Elementos de navegación en modo claro */
+.navbar-item,
+.navbar-link,
+.navbar-dropdown,
+.button.light {
+    background-color: transparent !important;
+    color: #004d61 !important;
+}
+
+/* Botón primario modo claro */
+.button.primary {
+    background-color: #0288D1;
+    color: #fff;
+}
+
+.button.primary:hover {
+    background-color: #0277BD;
+}
+
+/* Botón peligro modo claro */
+.button.danger {
+    background-color: #E53935;
+    color: #fff;
+}
+
+.button.danger:hover {
+    background-color: #C62828;
+}
+
+/* Barra navegación turquesa vivo modo oscuro */
+.dark-mode .navbar {
+    background-color:  #023859;
+    color: #FFEB3B;
+}
+
+/* Otra variante para modo claro */
+.navbar {
+    background-color: #e3f2fd;
+    color: #0D47A1;
+}
+
+.navbar-item,
+.navbar-link,
+.navbar-dropdown,
+.button.light {
+    background-color: transparent !important;
+    color: #0D47A1 !important;
+}
+
+.button.primary {
+    background-color: #1976D2;
+    color: #fff;
+}
+
+.button.primary:hover {
+    background-color: #1565C0;
+}
+
+.button.danger {
+    background-color: #E57373;
+    color: #fff;
+}
+
+.button.danger:hover {
+    background-color: #EF5350;
+}
+
+.button.home {
+    background-color: #FFA726;
+    color: #fff;
+}
+
+.button.home:hover {
+    background-color: #FB8C00;
+}
+
+.button.nuevo-blog {
+    background-color: #BA68C8;
+    color: #fff;
+}
+
+.button.nuevo-blog:hover {
+    background-color: #AB47BC;
+}
+
+.button.mi-publicacion {
+    background-color: #4DB6AC;
+    color: #fff;
+}
+
+.button.mi-publicacion:hover {
+    background-color: #26A69A;
+}
+
+.button.categorias-tecnologicas {
+    background-color: #64B5F6;
+    color: #fff;
+}
+
+.button.categorias-tecnologicas:hover {
+    background-color: #42A5F5;
+}
+
+.button.registro {
+    background-color: #1976D2;
+    color: #fff;
+}
+
+.button.registro:hover {
+    background-color: #1565C0;
+}
+</style>

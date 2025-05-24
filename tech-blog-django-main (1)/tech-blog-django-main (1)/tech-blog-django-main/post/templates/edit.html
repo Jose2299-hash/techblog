@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<style>
+  body {
+    font-family: Verdana, sans-serif;
+  }
+
+  .textarea-custom:focus {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+  }
+
+  .editor-container {
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+    color: #111827;
+  }
+
+  .dark .editor-container {
+    border-color: #4b5563;
+    background-color: #1f2937;
+    color: #ffffff;
+  }
+
+  .preview {
+    background: linear-gradient(135deg, #f9fafb, #e0f2fe);
+    border: 1px solid #cbd5e1;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    color: #1f2937;
+  }
+
+  .dark .preview {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #ffffff;
+  }
+
+  .preview h3,
+  .preview p,
+  .preview div {
+    color: inherit;
+  }
+
+  .button-custom {
+    background-color: #FFFFFF;
+    color: white;
+  }
+
+  .button-custom:hover {
+    background-color: #2563eb;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .title-box {
+    background-color: #3b82f6;
+    color: white;
+    border-left: 6px solid #1e40af;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .title-box h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .title-box p {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    color: #e0f2fe;
+  }
+
+  .dark .title-box {
+    background-color: #f1f5f9;
+    color: white;
+    border-left-color: #93c5fd;
+  }
+
+  .dark .title-box p {
+    color: #bfdbfe;
+  }
+
+  /* Inputs y labels */
+  input[type="text"],
+  textarea {
+    color: #111827;
+    background-color: #ffffff;
+  }
+
+  .dark input[type="text"],
+  .dark textarea {
+    color: #ffffff;
+    background-color: #1f2937;
+  }
+
+  label {
+    color: #111827;
+  }
+
+  .dark label {
+    color: #e5e7eb;
+  }
+
+  /* Botón de regresar al home */
+  .dark .dark-button-home {
+    color: #ffffff;
+    border-color: #60a5fa;
+  }
+
+  .dark .dark-button-home:hover {
+    background-color: #ffffff;
+    color: white;
+  }
+</style>
+
+
+<div class="container mx-auto my-6 px-4">
+  <!-- Título principal con estilo -->
+  <div class="title-box">
+    <h1>Edita tus historias</h1>
+    <p>Aquí puedes crear y guardar tus relatos de forma visual, rápida y con estilo.</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="mx-auto w-full md:w-[70%] bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-gray-700">
+    <!--<h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">Crear Nueva Historia</h2>-->
+    <form method="POST" enctype="multipart/form-data" onsubmit="return guardarContenido();">
+      {% csrf_token %}
+
+      <!-- Título -->
+      <div class="mb-6">
+        <label for="title" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Título de la Historia:</label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 placeholder-gray-500 dark:placeholder-gray-400 transition duration-200"
+          placeholder="Ingresa el título"
+          value="{{ form.title.value }}">
+      </div>
+
+      <!-- Editor con borde -->
+      <div class="mb-6">
+        <label for="contenido" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Contenido de la Historia:</label>
+        <div class="editor-container">
+          <textarea 
+            id="editor" 
+            name="contenido"
+          >{{ form.contenido.value }}</textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="button-custom text-white px-8 py-3 rounded-lg transition duration-200 font-semibold shadow-md">
+        Guardar
+      </button>
+    </form>
+  </div>
+
+  <!-- Vista previa -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Vista previa del contenido:</h2>
+    <div class="preview mb-6">
+      <div id="post-content" class="text-base leading-relaxed">No hay contenido guardado aún.</div>
+    </div>
+  </div>
+
+  <!-- Regresar al home -->
+  <div class="mt-6">
+    <form action="{% url 'all_posts' %}">
+      <button 
+        type="submit" 
+        class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-600 dark:hover:text-white dark:border-blue-400 dark:text-blue-400 transition duration-200 text-sm"
+      >
+        Regresar Al Home
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- CKEditor Script -->
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+  let editorInstance;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    ClassicEditor
+      .create(document.querySelector('#editor'))
+      .then(editor => {
+        editorInstance = editor;
+        const contenidoGuardado = localStorage.getItem('post_content');
+        if (contenidoGuardado) {
+          editorInstance.setData(contenidoGuardado);
+          document.getElementById('post-content').innerHTML = contenidoGuardado;
+        }
+      })
+      .catch(error => console.error(error));
+  });
+
+  function guardarContenido() {
+    if (!editorInstance) {
+      alert("Editor no inicializado.");
+      return false;
+    }
+    const contenido = editorInstance.getData();
+    if (!contenido.trim()) {
+      alert("El contenido está vacío.");
+      return false;
+    }
+    localStorage.setItem('post_content', contenido);
+    document.getElementById('post-content').innerHTML = contenido;
+    alert("Contenido guardado localmente y actualizado en la vista previa.");
+    return true;
+  }
+</script>
+{% endblock %}

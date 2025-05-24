@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="max-w-5xl mx-auto px-4">
+  <!-- Notificación primaria -->
+  <div class="bg-blue-100 text-blue-900 rounded-lg p-4 mt-5 shadow">
+    <h1 class="text-xl font-bold">{{ post.title }}</h1>
+    <p class="mt-1 text-sm text-gray-600">
+      <small>{{ post.author }}</small> &nbsp;
+      <small>{{ post.date_posted }}</small>
+    </p>
+  </div>
+
+  <!-- Imagen centrada -->
+  <div class="flex justify-center mt-6">
+    <figure class="w-[0px] flex justify-center">
+      <img src="../../media/{{post.thumbnail}}" alt="Post Thumbnail" class="rounded shadow">
+    </figure>
+  </div>
+
+  <!-- Contenido del post -->
+  <div id="post-content" class="text-lg mt-5 text-justify text-gray-800 dark:text-gray-200"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const contenidoGuardado = localStorage.getItem('post_content');
+    const contenedor = document.getElementById('post-content');
+    
+    if (contenidoGuardado) {
+      contenedor.innerHTML = contenidoGuardado;
+    } else {
+      contenedor.innerHTML = '<p>No hay contenido guardado.</p>';
+    }
+  });
+</script>
+
+<form action="{% url 'all_posts' %}" class="mt-6">
+  <button class="button is-link is-light is-small is-outlined" type="submit">Regresar al Home</button>
+</form>
+
+<!-- Zona de comentarios -->
+<div class="box mt-6 mx-auto max-w-4xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Agregar Comentario</h2>
+
+    <!-- Estrellas -->
+    <div id="rating-stars" class="mb-4 flex justify-center gap-2">
+      <label class="flex items-center gap-1">
+        <input type="radio" name="rating" value="1" class="accent-yellow-500"> ⭐
+      </label>
+      <label class="flex items-center gap-1">
+        <input type="radio" name="rating" value="2" class="accent-yellow-500"> ⭐⭐
+      </label>
+      <label class="flex items-center gap-1">
+        <input type="radio" name="rating" value="3" class="accent-yellow-500"> ⭐⭐⭐
+      </label>
+      <label class="flex items-center gap-1">
+        <input type="radio" name="rating" value="4" class="accent-yellow-500"> ⭐⭐⭐⭐
+      </label>
+      <label class="flex items-center gap-1">
+        <input type="radio" name="rating" value="5" class="accent-yellow-500"> ⭐⭐⭐⭐⭐
+      </label>
+    </div>
+
+    <!-- Editor -->
+    <textarea id="editor" class="w-full h-32 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none" placeholder="Escribe tu comentario aquí..."></textarea>
+
+    <!-- Botones -->
+    <div class="mt-4 flex justify-center gap-3">
+      <input type="file" id="archivo-adjunto" class="hidden" onchange="procesarArchivo(event)">
+      
+      <button type="button"
+              onclick="document.getElementById('archivo-adjunto').click()"
+              class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
+        Agregar archivo
+      </button>
+
+      <button type="button"
+              onclick="publicarComentario(event)"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        Publicar comentario
+      </button>
+    </div>
+
+    <!-- Comentarios publicados -->
+    <div id="comentarios-publicados" class="mt-5"></div>
+
+    <!-- CKEditor -->
+    <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@39.0.1/build/ckeditor.js"></script>
+
+    <!-- Lógica de comentarios -->
+    <script>
+      let editorInstance;
+
+      ClassicEditor.create(document.querySelector('#editor')).then(editor => {
+          editorInstance = editor;
+          cargarComentarios();
+      });
+
+      // Funciones para manejar el almacenamiento y visualización de comentarios
+      // Resto de tu código...
+
+    </script>
+</div>
+
+<style>
+    /* Estilo para el contenedor de comentarios */
+    .box {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .box:hover {
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Ajustes de diseño */
+    textarea {
+        background-color: #f9fafb; /* Color claro de fondo para el textarea */
+        border-radius: 8px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modo oscuro */
+    .dark textarea {
+        background-color: #4a5568;
+        color: #edf2f7; /* Texto claro en modo oscuro */
+    }
+</style>
+{% endblock %}

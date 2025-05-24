@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+{% include 'hero.html' %}
+
+<!-- Estilos personalizados -->
+<style>
+  body {
+    background-color: #E3F2FD;
+    color: #0D47A1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .notification-primary {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #0D47A1;
+    border-left: 4px solid #0D47A1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-input {
+    border: 1px solid #0D47A1;
+    color: #0D47A1;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .custom-input::placeholder {
+    color: #607D8B;
+  }
+
+  .custom-button {
+    background-color: #0288D1;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-button:hover {
+    background-color: #0277BD;
+    color: #fff;
+  }
+
+  .dark-mode body {
+    background-color: #121212;
+    color: #FFEB42;
+  }
+
+  .dark-mode .notification-primary {
+    background: linear-gradient(135deg, #000000, #222222, #ffffff10);
+    color: #FFFFFF;
+    border-left: 4px solid #54ACBF;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+  }
+
+  .dark-mode .custom-input {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border: 1px solid #54ACBF;
+  }
+
+  .dark-mode .custom-input::placeholder {
+    color: #CCCCCC;
+  }
+
+  .dark-mode .custom-button {
+    background-color: #263238;
+    color: #FFFFFF;
+  }
+
+  .dark-mode .custom-button:hover {
+    background-color: #00838F;
+    color: #FFFFFF;
+  }
+
+  .pagination .button {
+    background-color: #0288D1 !important;
+    color: #ffffff !important;
+    border: 1px solid #01579B !important;
+    margin: 0 4px !important;
+  }
+
+  .pagination .button:hover {
+    background-color: #0277BD !important;
+    color: #ffffff !important;
+  }
+
+  .dark-mode .pagination .button {
+    background-color: #455A64 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #90A4AE !important;
+  }
+
+  .dark-mode .pagination .button:hover {
+    background-color: #607D8B !important;
+    color: #FFFFFF !important;
+  }
+
+  .strong-text {
+    color: #0288D1;
+    font-weight: bold;
+  }
+
+  .dark-mode .strong-text {
+    color: #FFFFFF;
+  }
+</style>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="container mx-auto mt-6 px-4 space-y-6">
+
+  <!-- NOTIFICACIÓN + FORMULARIO CENTRADO -->
+  <div class="notification-primary px-6 py-4 rounded text-center flex flex-col items-center space-y-4">
+    <h1 class="text-xl strong-text">Vamos a leer.</h1>
+    <form method="get" class="flex flex-col sm:flex-row items-center justify-center gap-2">
+      {% csrf_token %}
+      <input
+        type="search"
+        name="search"
+        placeholder="Buscar un tema"
+        class="custom-input px-3 py-2 rounded focus:outline-none"
+      />
+      <button type="submit" class="custom-button px-4 py-2 rounded">
+        Buscar
+      </button>
+    </form>
+  </div>
+
+  <!-- BOTÓN REGRESAR CENTRADO -->
+  {% if is_filtered == True %}
+  <div class="flex justify-center">
+    <form action="{% url 'all_posts' %}">
+      <button
+        class="border border-blue-600 text-blue-700 text-sm px-4 py-2 rounded hover:bg-blue-500 hover:text-white
+               dark:text-yellow-300 dark:border-yellow-400 dark:hover:bg-yellow-400 dark:hover:text-black"
+        type="submit"
+      >
+        Regresar al Home
+      </button>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- MENSAJES SI EXISTEN -->
+  {% if messages %}
+  <div class="bg-red-600 text-white p-4 rounded-md dark:bg-red-700 text-center">
+    {% for message in messages %}
+    <p>
+      {{ message }}
+      <span class="ml-4 inline-block">
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+    </p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- LISTA DE PUBLICACIONES -->
+  {% include 'posts_list.html' %}
+
+  <!-- PAGINACIÓN CENTRADA -->
+  <div class="flex justify-center mt-4">
+    {% include 'pagination.html' %}
+  </div>
+
+</div>
+{% endblock %}

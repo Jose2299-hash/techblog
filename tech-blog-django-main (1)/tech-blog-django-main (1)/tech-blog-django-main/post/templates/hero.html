@@ -1,0 +1,77 @@
+<section class="hero-section py-10 px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+  <!-- Texto -->
+  <div class="text-container w-full md:w-3/5">
+    <p class="hero-title mb-3">🚀 Sigue explorando</p>
+    <p class="hero-subtitle mb-4">
+      Sumérgete en un blog donde comparto las últimas novedades, reflexiones y tendencias tecnológicas.
+      Aquí encontrarás publicaciones semanales sobre inteligencia artificial, desarrollo web, automatización, ciberseguridad y mucho más. ¡Explora, comenta y forma parte de esta comunidad tecnológica en crecimiento!
+    </p>
+    <div class="extra-info mt-6 text-base">
+      
+    </div>
+  </div>
+</section>
+
+<style>
+/* MODO CLARO */
+.hero-section {
+  background-color: #E3F2FD;
+  color: #1A237E;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0D47A1;
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: #1A237E;
+  margin-top: 0.5rem;
+}
+
+.extra-info {
+  font-size: 1rem;
+  color: #374151;
+}
+
+/* MODO OSCURO */
+.dark-mode .hero-section {
+  background: linear-gradient(135deg,#000000, #1E293B, #0F172A);
+  color: #ffffff;
+}
+
+.dark-mode .hero-title {
+  color: #ffffff;
+}
+
+.dark-mode .hero-subtitle {
+  color: #DDDDDD;
+}
+
+.dark-mode .extra-info {
+  color: #CCCCCC;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section {
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .extra-info {
+    font-size: 0.95rem;
+  }
+}
+</style>

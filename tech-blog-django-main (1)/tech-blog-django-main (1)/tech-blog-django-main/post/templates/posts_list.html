@@ -1,0 +1,176 @@
+<div class="posts-wrapper">
+  {% for post in posts %}
+  <article class="custom-post-container {% if is_dark_mode %}dark{% endif %}">
+    <figure class="custom-img-container">
+      <img src="/media/{{ post.thumbnail }}" alt="Post Thumbnail">
+    </figure>
+    <div class="custom-post-content">
+      <div>
+        <p class="custom-title">{{ post.title }}</p>
+        <p class="custom-meta">
+          <small><strong>{{ post.author.username }}</strong></small> &nbsp;
+          <small>{{ post.date_posted }}</small>
+        </p>
+        <p class="custom-content">
+          {% if post.content|length >= 150 %}
+            {{ post.content|truncatechars:150 }}
+          {% else %}
+            {{ post.content }}
+          {% endif %}
+        </p>
+      </div>
+      <form action="{% url 'detail_post' post.id %}">
+        <button class="read-more-button {% if is_dark_mode %}dark{% endif %}" type="submit">Leer Más</button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+
+<style>
+  /* CONTENEDOR PRINCIPAL */
+  .posts-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+
+  /* CONTENEDOR DE CADA POST */
+  .custom-post-container {
+    display: flex;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    width: 820px;
+    max-width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* DARK MODE OVERRIDE */
+  .dark .custom-post-container {
+    background: rgba(30, 30, 30, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  /* IMAGEN */
+  .custom-img-container {
+    width: 300px;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .custom-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .custom-img-container:hover img {
+    transform: scale(1.05);
+  }
+
+  /* CONTENIDO */
+  .custom-post-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  .custom-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+
+  .dark .custom-title {
+    color: #ffffff;
+  }
+
+  .custom-meta {
+    font-size: 0.9rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .custom-meta small {
+    color: #000000;
+  }
+
+  .dark .custom-meta {
+    color: #CFD8DC;
+  }
+
+  .dark .custom-meta small {
+    color: #FFFFFF;
+  }
+
+  .custom-content {
+    font-size: 1rem;
+    color: #1E293B;
+    line-height: 1.6;
+  }
+
+  .dark .custom-content {
+    color: #E3F2FD;
+  }
+
+  .read-more-button {
+    background-color: rgba(33, 150, 243, 0.15);
+    color: #0D47A1;
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-top: 1rem;
+  }
+
+  .read-more-button:hover {
+    background-color: rgba(33, 150, 243, 0.25);
+    transform: scale(1.05);
+  }
+
+  .read-more-button.dark {
+    background-color: rgba(129, 212, 250, 0.2);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .read-more-button.dark:hover {
+    background-color: rgba(129, 212, 250, 0.4);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .custom-post-container {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .custom-img-container {
+      width: 100%;
+      height: 220px;
+    }
+
+    .custom-post-content {
+      padding: 1.2rem;
+    }
+  }
+</style>

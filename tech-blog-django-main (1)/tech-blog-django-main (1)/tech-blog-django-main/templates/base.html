@@ -1,0 +1,410 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Script para aplicar modo oscuro antes del CSS -->
+  <script>
+function toggleModo() {
+  const isDark = document.documentElement.classList.toggle('dark-mode');
+  localStorage.setItem('dark-mode', isDark);
+}
+
+// Agrega un botón para alternar
+const toggleButton = document.createElement("button");
+toggleButton.textContent = "Cambiar Modo";
+toggleButton.onclick = toggleModo;
+document.body.appendChild(toggleButton);
+
+
+
+
+    (function () {
+      try {
+        const darkMode = localStorage.getItem('dark-mode');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = darkMode === 'true' || (darkMode === null && prefersDark);
+
+
+        if (isDark) {
+          document.documentElement.classList.add('dark-mode');
+          }
+
+
+        if (isDark) {
+          document.documentElement.classList.add('dark-mode');
+          document.write(`
+            <style>
+              #loading-overlay {
+                background-color: #037065 !important;
+              }
+            </style>
+          `);
+        } else {
+          document.write(`
+            <style>
+              #loading-overlay {
+                background-color: #E3F2FD !important;
+              }
+            </style>
+          `);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css" />
+
+  <style>
+  /* 🌞 MODO CLARO */
+    body {
+      background-color: #E3F2FD;
+      color: #000;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      cursor: none; /* Oculta el cursor por defecto */
+    }
+
+    .navbar {
+      background-color: #A7EBF2;
+      color: #FFEB3B;
+      padding: 10px 20px;
+    }
+
+    .navbar-item,
+    .navbar-link {
+      color: #FFEB3B;
+    }
+
+    .navbar .button:hover {
+      background-color: #C8D8E1;   /* COLOR DE LOS BOTONES */
+    }
+
+    .content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .dark-mode body {
+  background: linear-gradient(135deg, #EFF0F0, #151C4B, #69BFEF, #5A7A9A) !important;
+  color: #FFEB3B;
+}
+
+    .dark-mode .navbar,
+    .dark-mode .navbar-item,
+    .dark-mode .navbar-link {
+      background: linear-gradient(135deg, #EFF0F0, #151C4B, #69BFEF, #5A7A9A);
+      color: #FFEB3B;
+    }
+
+    .dark-mode .navbar .button {
+      background-color: #4F4F4F; /* color de bt de modo y cerrrar sesion*/
+      color: #FFEB3B;
+    }
+
+    .dark-mode .navbar .button:hover {
+      background: linear-gradient(135deg, #EFF0F0, #151C4B, #69BFEF, #5A7A9A);;/* AVERIGUAR*/
+    }
+
+    /*.dark-mode footer {
+      background-color: #023859; /* AVERIGUAR QUE HACE
+      color:rgb(255, 255, 255);
+    }*/
+
+    /*.dark-mode footer .title {
+      color:rgb(255, 255, 255);
+    }*/
+
+    /*.dark-mode footer a {
+      color: #011C40;               /*a0cfff APLICAR EN MODO CLARO
+    }*/
+    
+body.dark-mode, /* BODY TODO */
+.dark-mode body {
+  background: linear-gradient(135deg, #000000, #151A1F, #151C4B, #000000) !important;
+  color: #FFEB3B;
+}
+
+    /* Overlay loading tecnológico */
+
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #010a13 0%, #023047 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+      flex-direction: column;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .dark-mode #loading-overlay {
+      background: linear-gradient(135deg, #002b2f 0%, #005a61 100%);
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc;
+    }
+
+    .spinner-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Spinner animado estilo futurista */
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 8px solid rgba(0, 255, 247, 0.2);
+      border-top: 8px solid #00fff7;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+      box-shadow: 0 0 20px #00fff7;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-size: 1.2rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    /* Canvas para cursor animado */
+    #cursor-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none; /* que no interfiera con clicks */
+      z-index: 10000;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+
+  <title>HyperNet NexusCore</title>
+</head>
+
+<body>
+  <!-- Overlay con spinner tecnológico -->
+  <div id="loading-overlay">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Initializing HyperNet NexusCore...</p>
+    </div>
+  </div>
+
+  {% include 'navbar.html' %}
+  <div class="content">
+    {% block contenido %}{% endblock %}
+  </div>
+  {% include 'footer.html' %}
+
+  <!-- Canvas para cursor animado -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <!-- Script para ocultar el overlay tras 0.5 segundos -->
+  <script>
+    setTimeout(() => {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.style.display = 'none', 300);
+      }
+    }, 500);
+  </script>
+
+  <canvas id="cursor-canvas"></canvas>
+<script>
+const canvas = document.getElementById('cursor-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+function resize() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width * devicePixelRatio;
+  canvas.height = height * devicePixelRatio;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+resize();
+window.addEventListener('resize', resize);
+
+let mouseX = width / 2;
+let mouseY = height / 2;
+window.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+let mainNode = { x: mouseX, y: mouseY };
+
+function drawCursor() {
+  ctx.clearRect(0, 0, width, height);
+
+  mainNode.x += (mouseX - mainNode.x) * 0.12;
+  mainNode.y += (mouseY - mainNode.y) * 0.12;
+
+  const time = Date.now() / 1000;
+  const depthOsc = 1 + 0.15 * Math.sin(time * 2.5);
+  const rotation3D = time * 1.5;
+
+  ctx.save();
+  ctx.translate(mainNode.x, mainNode.y);
+  ctx.scale(depthOsc, depthOsc);
+  ctx.rotate(rotation3D);
+
+  const ringRadius = 40;
+  const ringSegments = 60;
+  const ringRotation = time * 0.7;
+  ctx.lineWidth = 1.5;
+
+  for (let i = 0; i < ringSegments; i++) {
+    const baseAngle = (i / ringSegments) * Math.PI * 2 + ringRotation;
+    const xOffset = Math.sin(time * (0.8 + i * 0.05) + i) * 4;
+    const yOffset = Math.cos(time * (1.1 + i * 0.03) + i * 2) * 4;
+    const segmentLength = 5 + 4 * Math.sin(time * 5 + i);
+
+    const xStart = Math.cos(baseAngle) * ringRadius + xOffset;
+    const yStart = Math.sin(baseAngle) * ringRadius + yOffset;
+    const xEnd = Math.cos(baseAngle) * (ringRadius + segmentLength) + xOffset;
+    const yEnd = Math.sin(baseAngle) * (ringRadius + segmentLength) + yOffset;
+
+    const neonColor = `hsl(${(i * 6 + time * 60) % 360}, 100%, 60%)`;
+    ctx.strokeStyle = neonColor;
+    ctx.shadowColor = neonColor;
+    ctx.shadowBlur = 20;
+
+    ctx.beginPath();
+    ctx.moveTo(xStart, yStart);
+    ctx.lineTo(xEnd, yEnd);
+    ctx.stroke();
+  }
+
+  // Centro
+  ctx.beginPath();
+  ctx.arc(0, 0, 12, 0, Math.PI * 2);
+  ctx.fillStyle = 'cyan';
+  ctx.shadowColor = 'cyan';
+  ctx.shadowBlur = 40;
+  ctx.fill();
+
+  // Efecto difuminado
+  const gradient = ctx.createRadialGradient(0, 0, 5, 0, 0, 15);
+  gradient.addColorStop(0, 'rgba(0, 255, 255, 0.3)');
+  gradient.addColorStop(0.5, 'rgba(255, 0, 255, 0.2)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(-15, -15, 30, 30);
+
+  // Pulso interior
+  ctx.beginPath();
+  const pulse = 6 + 3 * Math.sin(time * 6);
+  ctx.arc(0, 0, pulse, 0, Math.PI * 2);
+  ctx.fillStyle = 'magenta';
+  ctx.shadowColor = 'magenta';
+  ctx.shadowBlur = 30;
+  ctx.fill();
+
+  // Cruces brillantes
+  ctx.strokeStyle = 'lime';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'lime';
+  ctx.shadowBlur = 20;
+
+  ctx.beginPath();
+  ctx.moveTo(-20, 0);
+  ctx.lineTo(-8, 0);
+  ctx.moveTo(8, 0);
+  ctx.lineTo(20, 0);
+  ctx.moveTo(0, -20);
+  ctx.lineTo(0, -8);
+  ctx.moveTo(0, 8);
+  ctx.lineTo(0, 20);
+  ctx.stroke();
+
+  // Rectángulos brillantes
+  ctx.fillStyle = 'deepskyblue';
+  ctx.shadowColor = 'deepskyblue';
+  ctx.shadowBlur = 15;
+
+  const rectSize = 5;
+  const rectSpacing = 12;
+  ctx.fillRect(-rectSpacing - rectSize, -rectSize / 2, rectSize, rectSize);
+  ctx.fillRect(rectSpacing, -rectSize / 2, rectSize, rectSize);
+  ctx.fillRect(-rectSize / 2, -rectSpacing - rectSize, rectSize, rectSize);
+  ctx.fillRect(-rectSize / 2, rectSpacing, rectSize, rectSize);
+
+  ctx.strokeStyle = 'yellow';
+  ctx.shadowColor = 'yellow';
+  ctx.shadowBlur = 10;
+
+  ctx.beginPath();
+  ctx.moveTo(-15, -15);
+  ctx.lineTo(-8, -8);
+  ctx.moveTo(15, 15);
+  ctx.lineTo(8, 8);
+  ctx.moveTo(15, -15);
+  ctx.lineTo(8, -8);
+  ctx.moveTo(-15, 15);
+  ctx.lineTo(-8, 8);
+  ctx.stroke();
+
+  // Partículas externas
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2 + time;
+    const baseDist = ringRadius + 10;
+    const zOsc = 10 * Math.sin(time * 3 + i);
+
+    const px = Math.cos(angle) * (baseDist + zOsc);
+    const py = Math.sin(angle) * (baseDist + zOsc);
+    const size = 3 + 1.5 * (zOsc / 10);
+    const alpha = 0.4 + 0.6 * (zOsc / 10 + 1) / 2;
+
+    const color = `hsl(${(angle * 180 / Math.PI + time * 120) % 360}, 100%, 65%)`;
+
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 20;
+    ctx.beginPath();
+    ctx.arc(px, py, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+  requestAnimationFrame(drawCursor);
+}
+drawCursor();
+</script>
+</body>
+
+</html>
